@@ -161,7 +161,7 @@ Actions 解决的核心问题：AI 不仅能"告诉你答案"，还能"直接执
 | 目标 | Palantir 方案 | 开源/国产替代 | 真实差距 |
 |------|-------------|-------------|---------|
 | AI 触发业务操作 | Ontology Action → 写回数据 | LangChain tools / Function calling + 业务 API | 技术上可行，但审批/Human-in-the-Loop 需要自建 |
-| AI 工作流编排（可视化） | AIP Logic | Dify `[待核实：当前版本能力]` / n8n | Dify 在应用层很接近，缺的是与"业务对象"的原生绑定 |
+| AI 工作流编排（可视化） | AIP Logic | Dify（v1.13+ 支持 HITL [来源](https://dify.ai/blog/the-human-input-node-bringing-human-judgment-into-automated-workflows)）/ n8n | Dify 在应用层很接近，缺的是与"业务对象"的原生绑定 |
 | 低代码应用构建 | Workshop | Dify Agent UI / Appsmith | 功能接近，但 Workshop 的应用"天然继承"Ontology 权限 |
 
 ### Layer 3：治理层（权限与合规）

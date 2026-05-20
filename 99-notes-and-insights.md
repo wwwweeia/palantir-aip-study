@@ -34,7 +34,7 @@
 
 ### 重要的新发现
 
-**Interfaces 是 2023–2024 年期间引入的关键新特性**（具体时间 `[待核实]`）
+**Interfaces 于 2024-08-27 以 Beta 形式发布**（[官方公告](https://palantir.com/docs/foundry/announcements/2024-08/)），是 Ontology 多态性的关键支撑。
 - 类似 OOP 里的接口/抽象类，提供跨 Object Type 的多态性
 - 实际价值：一个 Action 可以同时作用于多种对象类型，AI Agent 查询时不需要知道具体类型
 - 这对建模复杂业务域（如各类工单、各类审批）非常有价值
@@ -107,7 +107,7 @@
 ### D1 新产生的追问
 
 - [ ] Palantir 是否公开过 FDE 人力/客户比？从财报看 FDE 密度的变化趋势（可用于验证"FDE 占比在下降"的推论）
-- [ ] AIP Assist 的当前能力边界：它能引导用户做哪些 Ontology 操作？是否已替代部分 FDE 的入门工作？`[待核实]`
+- [x] AIP Assist 的当前能力边界：**已确认**——它是 LLM 驱动的文档/平台导航助手，能回答 Foundry 使用问题，支持上下文感知（知道你在哪个应用），可添加自定义文档源。但它**不能操作 Ontology**（官方文档明确"does not access your data"），不替代 FDE 的建模和集成工作。来源：[官方 AIP Assist 文档](https://palantir.com/docs/foundry/assist/overview/)
 - [ ] 变形 1（驻场外包）的退出机制：什么合同结构能从源头防止这种退化？
 
 ---
@@ -130,7 +130,7 @@
 ### D2 新产生的追问
 
 - [ ] dbt Semantic Layer 和 LlamaIndex Knowledge Graph 的实际集成案例：有没有人真的用这两个搭出了"业务对象"层？
-- [ ] Dify 当前版本的工具调用能力边界：能否支持"审批/Human-in-the-Loop"的 Action 模式？`[待核实]`
+- [x] Dify 当前版本的工具调用能力边界：**已确认支持 HITL**——v1.13.0（2026-03-03）引入 Human Input 节点，工作流可暂停等待人工审批/修改/转发。来源：[Dify 官方博客](https://dify.ai/blog/the-human-input-node-bringing-human-judgment-into-automated-workflows)
 - [ ] 制造业 OT/IT 融合的主流解法：Kepware / OPC-UA 这类协议网关在国内的实际落地情况
 - [ ] 政务联邦学习的落地案例：国内有没有真实的跨部门联邦学习实施，不只是 POC？（用于 03 的落地建议）
 
@@ -173,6 +173,22 @@
 ### 新产生的追问
 
 - [ ] 三档路径的"撞墙信号"需要实际案例验证——有没有团队在路径 A 撞墙后成功升级到路径 B 的公开经验？
-- [ ] 国内 DataHub / dbt Semantic Layer 的实际落地案例——有没有企业真的用它做了"业务对象"层？`[待核实]`
+- [ ] 国内 DataHub / dbt Semantic Layer 的实际落地案例——有没有企业真的用它做了"业务对象"层？`[待核实]`（搜索未找到公开案例，可能需要社区渠道打听）
 - [ ] 路径 B 的"最小拼法"工具链成本估算需要更精确——3-6 人月是粗略判断，实际取决于数据源数量和治理复杂度
 
+---
+
+## 2026-05-20（Q4 事实核实）
+
+### 核实结论
+
+| 问题 | 结果 | 来源 |
+|------|------|------|
+| Interfaces 引入时间 | 2024-08-27 Beta 发布 | [官方公告 2024-08](https://palantir.com/docs/foundry/announcements/2024-08/) |
+| Function-backed Rule 互斥 | 官方确认："a function rule cannot be combined with other Ontology rules" | [官方文档](https://palantir.com/docs/foundry/action-types/function-actions-getting-started/) |
+| Functions 多语言体系 | 概念统一（TS v1/v2 + Python），但特性支持不同 | [官方文档](https://palantir.com/docs/foundry/functions/language-feature-support/) |
+| OSDK Python API 形态 | `client.ontology.objects.Type.where(Type.object_type.prop == value)` | [官方文档](https://palantir.com/docs/foundry/ontology-sdk/python-osdk/) |
+| AIP Assist 能力边界 | 文档/平台导航助手，不操作 Ontology，不替代 FDE | [官方文档](https://palantir.com/docs/foundry/assist/overview/) |
+| Dify HITL 支持 | v1.13.0（2026-03-03）引入 Human Input 节点 | [官方博客](https://dify.ai/blog/the-human-input-node-bringing-human-judgment-into-automated-workflows) |
+| FDE 演变阶段时间节点 | **未核实**：无公开资料精确划分 | — |
+| 国内 DataHub/dbt 落地案例 | **未核实**：搜索无果 | — |

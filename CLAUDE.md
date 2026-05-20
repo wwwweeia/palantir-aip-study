@@ -35,16 +35,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 上下文承接（最近一次会话：2026-05-20，D3 收束篇完成）
+## 上下文承接（最近一次会话：2026-05-20，Q4 事实核实完成）
 
 > 这一节是给**下一位 Claude 实例**的接手说明。完成一个推进阶段后，请同步更新它。
 
 ### 当前进度快照
 
-- ✅ `01-palantir-aip-ontology.md` —— 已完成第二轮独立审视修订
+- ✅ `01-palantir-aip-ontology.md` —— 已完成第二轮独立审视修订 + Q4 事实核实
   - 新增"前置澄清节"（Foundry / Ontology / AIP 三层关系）
   - 新增 §12"局限、批评与替代方案"（含真正的替代方案对比表：Databricks / Fabric / Snowflake / 开源 / 国产）
-  - 多处 `[待核实]` 标注（Interfaces 引入时间、Function-backed Rule 互斥、Functions 多语言体系归属、OSDK Python API 形态）
+  - **Q4 核实完成（4/4）**：Interfaces 2024-08-27 Beta、Function-backed Rule 互斥性已官方确认、Functions 多语言已统一但特性有差异、OSDK Python API 已更新为真实风格
   - "AI 看不到人看不到的数据"已软化为工程化精确表达
 - ✅ `README.md` 顶部已加"研究前提"，明确**Palantir 不进中国市场，本研究目的是方法论借鉴**
 - ✅ `02-fde-forward-deployed-engineer.md` —— Q1 质量修订完成（2026-05-20）
@@ -54,16 +54,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
     - 删除"FDE 为客户创造的价值"节（销售 PPT 语言）
     - "FDE 适合场景" → 改写为"FDE 不适合的场景"（边界比范围更重要）
   - 顶部加"阅读前提"承接句（来自 01 Ontology 语义层 → 02 FDE 让它落地）
-  - `[待核实]` 标注保留：AIP Assist 能力边界、FDE 演变阶段时间节点
+  - `[待核实]` 保留：FDE 演变阶段时间节点（无公开资料精确核实）
 - ✅ `03-enterprise-ai-landing.md` —— Q2/Q3 质量修订完成（2026-05-20）
   - **Step 3 升级**：用制造业物料追踪具体场景对比"SQL 表 vs Ontology 关系显式化"的差异，说明为什么 Ontology 能让 AI 理解业务上下文
   - 顶部加"阅读前提"承接句（来自 01+02 → 03 = 没有 Palantir 怎么办？坑在哪？）
-  - `[待核实]` 标注保留：Dify 当前工具调用能力边界
-- ✅ `04-action-guide-domestic-ai.md` —— D3 初版完成（2026-05-20）
+- ✅ `04-action-guide-domestic-ai.md` —— D3 初版完成（2026-05-20）+ Q4 更新
   - 回答 README 核心问题："国产化技术栈下能否搭出近似 Palantir 范式？"
   - 三档决策框架：路径 A（RAG + 工作流）/ 路径 B（加语义抽象层）/ 路径 C（深度建模 + 平台化）
   - 每条路径：判断维度、工具链、成本估算、第一步做什么、撞墙信号
   - 三个必须避的坑 + 自我批判节（6 条局限）
+  - **Q4 更新**：自我批判第 6 条已更新为核实结论
+- ✅ Q4 事实核实完成（2026-05-20）
+  - 8 处 `[待核实]` 中核实 6 处，保留 2 处
+  - 已核实：Interfaces 2024-08 Beta、Rule 互斥性、Functions 体系归属、OSDK Python API、AIP Assist 定位（文档导航，不操作 Ontology）、Dify HITL（v1.13.0 2026-03 支持）
+  - 保留：FDE 演变阶段时间节点、国内 DataHub/dbt Semantic Layer 落地案例
 - 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（D3）"小节
 
 ### 下一步推进方向
@@ -71,7 +75,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **主要工作已完成**。四篇主线笔记覆盖了"理解 Palantir → 分析落地角色 → 非 Palantir 路径 → 行动决策"的完整闭环。
 
 **可选后续（均为锦上添花，非必须）**：
-1. Q4：核实 `[待核实]` 标记（10+ 处，可用 `tavily-search`）
+1. ~~Q4：核实 `[待核实]` 标记~~ → **已完成**（6/8 核实，2 处保留）
 2. 04 篇的"撞墙信号"需要实际案例验证
 3. VitePress 文档站同步更新（如需）
 

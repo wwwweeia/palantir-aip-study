@@ -158,7 +158,7 @@ AI 的查询是**遍历图结构**，而不是写多表 JOIN。
 
 ## 3. Interfaces（接口）— 重要的新概念
 
-`[引入时间待核实]` 2023–2024 年期间引入的重要特性，类似 OOP 中的接口/抽象类。
+2024 年 8 月 27 日以 Beta 形式发布的重要特性（[来源](https://palantir.com/docs/foundry/announcements/2024-08/)），类似 OOP 中的接口/抽象类。
 
 ### 作用
 
@@ -227,7 +227,7 @@ Action Type: Assign Employee（调整员工角色）
 | 创建/删除链接规则 | 建立或断开对象之间的关联 |
 | Function-backed Rule | 用代码函数实现复杂逻辑（最强大） |
 
-> `[细节待核实]` 当配置了 Function-backed Rule 时，其他 Rule 不能共存——Function 可以完成一切其他 Rule 能做的事，且能处理任意复杂逻辑。（来源是分析文章而非官方文档，需回到 Action Types 官方文档核对）
+> 当配置了 Function-backed Rule 时，其他 Rule 不能共存——官方文档明确指出"a function rule cannot be combined with other Ontology rules"（[来源](https://palantir.com/docs/foundry/action-types/function-actions-getting-started/)）。Function 可以完成一切其他 Rule 能做的事，且能处理任意复杂逻辑。
 
 ### 思维模型
 
@@ -256,7 +256,7 @@ Action Type: Assign Employee（调整员工角色）
 - TypeScript v1（旧版）
 - Python
 
-> `[体系归属待核实]` Foundry 历史上 TypeScript Functions 与 Python Functions 是相对独立的产物（基础设施、部署方式都不同）。是否真正统一到同一套 Functions 体系下，需要回到官方 Functions 文档确认当前形态。
+> Foundry 的 TypeScript Functions（v1/v2）与 Python Functions 在概念上已统一到同一套 Functions 体系下，但特性支持仍有差异（[来源](https://palantir.com/docs/foundry/functions/language-feature-support/)）：例如 Interfaces 仅 TS v2 支持，Pipeline Builder 调用仅 Python 支持。两者均支持 OSDK，推荐根据场景选择语言。
 
 ### Functions 的典型用场景
 
@@ -359,24 +359,28 @@ OSDK（Ontology SDK）是开发者对接 Ontology 的编程接口，让外部应
 
 ### OSDK 示例（Python 风格伪码）
 
-> `[API 形态待核实]` 下面是风格示意，**实际 OSDK Python 的 API 命名/链式语法以官方文档为准**——Python OSDK 较新、版本演进较快，实际可能在客户端构造、对象查询、链路遍历的写法上与下面差异较大。读者请把这段代码看作"心智模型"，不要直接复制使用。
+> 下面是基于官方文档的真实 API 风格（[来源](https://palantir.com/docs/foundry/ontology-sdk/python-osdk/)），核心模式是 `client.ontology.objects.Type.where(Type.object_type.prop == value)`。
 
 ```python
 # 查询高风险客户
-from my_ontology import Customer, Order
+from ontology_sdk import FoundryClient
+from ontology_sdk.ontology.objects import Customer
 
-high_risk_customers = client.objects(Customer) \
-    .filter(Customer.lifetime_spend < 10000) \
-    .filter(Customer.last_order_date < "2024-01-01") \
+client = FoundryClient()
+high_risk_customers = client.ontology.objects.Customer.where(
+    Customer.object_type.lifetime_spend < 10000
+).where(
+    Customer.object_type.last_order_date < "2024-01-01"
+)
     .fetch_page()
 
-# 遍历关联订单
+# 遍历关联订单（链路遍历语法以官方 OSDK 文档为准）
 for customer in high_risk_customers:
-    orders = customer.links.orders.all()
+    orders = customer.orders  # 关联对象访问
     print(f"{customer.name}: {len(orders)} orders")
 
-# 触发 Action
-client.actions.send_retention_email(
+# 触发 Action（API 以官方文档为准）
+client.ontology.actions.send_retention_email(
     customer=customer,
     template="win_back_30day"
 )
