@@ -47,18 +47,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - 多处 `[待核实]` 标注（Interfaces 引入时间、Function-backed Rule 互斥、Functions 多语言体系归属、OSDK Python API 形态）
   - "AI 看不到人看不到的数据"已软化为工程化精确表达
 - ✅ `README.md` 顶部已加"研究前提"，明确**Palantir 不进中国市场，本研究目的是方法论借鉴**
-- ⏳ `02-fde-forward-deployed-engineer.md` —— 初稿，待深化（D1）
+- ✅ `02-fde-forward-deployed-engineer.md` —— D1 深化完成（2026-05-20）
+  - 新增"FDE 模式的挑战与终局"（结构性矛盾分析 + 过渡形态论证）
+  - 新增"FDE 的演变弧线"（1.0→3.0 三阶段 + 知识晶体化路径 Mermaid 图）
+  - 新增"FDE 模式的中国移植：三种变形"（驻场外包 / 业务架构师 / 技术合伙人式 CSM）
+  - 删除"对国内 AI 落地的启示"（内容已整合进"中国移植"节）
+  - 迁移"待深入"追问至 `99-notes-and-insights.md`
+  - `[待核实]` 标注：AIP Assist 能力边界、FDE 演变阶段时间节点
 - ⏳ `03-enterprise-ai-landing.md` —— 框架草稿，待展开（D2）
 - 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（第二轮独立审视后的修订）"小节
 
 ### 下一步推进方向
 
-**D1：深化 02-FDE（优先级最高）**
-
-- ❌ 不要做百科式事实补全（招聘要求、项目周期、CSM 协作）
-- ✅ 抓两个独特切口：
-  1. **FDE 模式的演变**：Palantir 自己在通过 OSDK / Workshop 模板 / AIP Assist **降低 FDE 依赖**。FDE 不是稳态，是过渡形态。要回答"FDE 工作如何沉淀为可复用资产"
-  2. **国内可移植性**：甲乙方文化 + 外包惯性下，"驻场工程师"会变形成什么样？参照对象：互联网大厂"业务架构师"、SAP/Oracle 实施顾问、Salesforce 驻场咨询
+**D1：深化 02-FDE ✅ 已完成（2026-05-20）**
 
 **D2：扩展 03-企业落地**
 
