@@ -35,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 上下文承接（最近一次会话：2026-05-20，Q1/Q2/Q3 质量修订后）
+## 上下文承接（最近一次会话：2026-05-20，D3 收束篇完成）
 
 > 这一节是给**下一位 Claude 实例**的接手说明。完成一个推进阶段后，请同步更新它。
 
@@ -59,21 +59,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - **Step 3 升级**：用制造业物料追踪具体场景对比"SQL 表 vs Ontology 关系显式化"的差异，说明为什么 Ontology 能让 AI 理解业务上下文
   - 顶部加"阅读前提"承接句（来自 01+02 → 03 = 没有 Palantir 怎么办？坑在哪？）
   - `[待核实]` 标注保留：Dify 当前工具调用能力边界
-- 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（Q1/Q2/Q3 质量修订）"小节
+- ✅ `04-action-guide-domestic-ai.md` —— D3 初版完成（2026-05-20）
+  - 回答 README 核心问题："国产化技术栈下能否搭出近似 Palantir 范式？"
+  - 三档决策框架：路径 A（RAG + 工作流）/ 路径 B（加语义抽象层）/ 路径 C（深度建模 + 平台化）
+  - 每条路径：判断维度、工具链、成本估算、第一步做什么、撞墙信号
+  - 三个必须避的坑 + 自我批判节（6 条局限）
+- 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（D3）"小节
 
 ### 下一步推进方向
 
-**Q1：02-FDE 前半升级 ✅ 已完成（2026-05-20）**
+**主要工作已完成**。四篇主线笔记覆盖了"理解 Palantir → 分析落地角色 → 非 Palantir 路径 → 行动决策"的完整闭环。
 
-**Q2：03-落地 Step 3 升级 ✅ 已完成（2026-05-20）**
-
-**Q3：02/03 承接句 ✅ 已完成（2026-05-20）**
-
-**Q4（低优先级）：[待核实] 核实**
-优先核实三项（可用 `tavily-search`）：
-- AIP Assist 的当前能力边界
-- FDE 演变阶段时间节点
-- Dify 工具调用的 Human-in-the-Loop 支持情况
+**可选后续（均为锦上添花，非必须）**：
+1. Q4：核实 `[待核实]` 标记（10+ 处，可用 `tavily-search`）
+2. 04 篇的"撞墙信号"需要实际案例验证
+3. VitePress 文档站同步更新（如需）
 
 ### 必须避免
 
