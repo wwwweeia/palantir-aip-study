@@ -14,6 +14,40 @@
 
 ---
 
+## 前置澄清：Foundry / Ontology / AIP 是三层不同的东西
+
+读 Palantir 资料最容易混淆的概念，先在这里钉死：
+
+```
+┌─────────────────────────────────────────────────────────┐
+│   AIP（Artificial Intelligence Platform）                │   ← AI 应用层
+│   AIP Logic / Workshop / Assist / Agent Studio / Threads │     LLM 编排、Agent、对话式产品
+├─────────────────────────────────────────────────────────┤
+│   Ontology                                              │   ← 语义 / 逻辑 / 执行层
+│   Object Types + Link Types + Action Types              │     企业的"数字孪生"
+│   + Functions + Interfaces + Roles                      │
+├─────────────────────────────────────────────────────────┤
+│   Foundry                                               │   ← 数据平台层
+│   Pipeline Builder / Code Repo / Dataset / Compute       │     ETL、数据治理、计算引擎
+└─────────────────────────────────────────────────────────┘
+```
+
+| 层 | 它是什么 | 它解决的问题 |
+|----|---------|------------|
+| **Foundry** | 基础**数据平台**。负责把 ERP/CRM/IoT/文件 等异构数据源接入、清洗、构建管道，沉淀为统一治理的 Dataset | 数据集成与治理（80% 的工程量在这里） |
+| **Ontology** | 构建在 Foundry 之上的**语义层 + 逻辑层 + 执行层**。把 Dataset 映射成业务对象、关系和可执行的行动 | 让数据可以被业务和 AI"理解 + 操作" |
+| **AIP** | 构建在 Foundry + Ontology 之上的 **AI 应用层**。所有 AIP 产品都通过 Ontology 与企业数据世界交互 | LLM 与企业业务的安全编排 |
+
+**容易踩的概念陷阱**：
+
+- "Palantir Foundry" 有时被用作整个平台的代称——严格来说 AIP 是 Foundry 之上的产品，不是平级。
+- "Ontology" 既是一个抽象概念（业务语义模型），也是 Foundry 里一个具体的产品组件。
+- 微信图解里说的"Palantir AIP Ontology"严格说是个不严谨的叠加叫法。**本文档沿用了这个习惯标题，但讨论的核心是 Ontology 本身**——它既是 Foundry 的核心模块，也是 AIP 真正用来与企业数据互动的接口。
+
+> 一句话记法：**Foundry 管数据，Ontology 管语义和操作，AIP 管 AI 体验。**
+
+---
+
 ## 从"数据表"到"业务世界"
 
 传统方式，AI 看到的是：
@@ -124,7 +158,7 @@ AI 的查询是**遍历图结构**，而不是写多表 JOIN。
 
 ## 3. Interfaces（接口）— 重要的新概念
 
-2024年引入的重要特性，类似 OOP 中的接口/抽象类。
+`[引入时间待核实]` 2023–2024 年期间引入的重要特性，类似 OOP 中的接口/抽象类。
 
 ### 作用
 
@@ -193,7 +227,7 @@ Action Type: Assign Employee（调整员工角色）
 | 创建/删除链接规则 | 建立或断开对象之间的关联 |
 | Function-backed Rule | 用代码函数实现复杂逻辑（最强大） |
 
-> 当配置了 Function-backed Rule 时，其他 Rule 不能共存——Function 可以完成一切其他 Rule 能做的事，且能处理任意复杂逻辑。
+> `[细节待核实]` 当配置了 Function-backed Rule 时，其他 Rule 不能共存——Function 可以完成一切其他 Rule 能做的事，且能处理任意复杂逻辑。（来源是分析文章而非官方文档，需回到 Action Types 官方文档核对）
 
 ### 思维模型
 
@@ -221,6 +255,8 @@ Action Type: Assign Employee（调整员工角色）
 - TypeScript v2（推荐，最新）
 - TypeScript v1（旧版）
 - Python
+
+> `[体系归属待核实]` Foundry 历史上 TypeScript Functions 与 Python Functions 是相对独立的产物（基础设施、部署方式都不同）。是否真正统一到同一套 Functions 体系下，需要回到官方 Functions 文档确认当前形态。
 
 ### Functions 的典型用场景
 
@@ -256,13 +292,23 @@ Object Type 级别权限（细粒度）
 └── 谁可以执行某个 Action
 ```
 
-**关键设计**：AI 只能看到人能看到的数据——权限贯穿从数据层到 AI 层。
+**关键设计**：权限沿"数据层 → Ontology Roles → OSDK Token → AI 应用"逐层传递，**架构上**保证 AI 应用对 Ontology 的访问遵循调用者的角色权限——这是 Palantir 的核心治理承诺。
+
+> ⚠️ 工程上要更精确地理解这句话：
+>
+> - 架构保证的是"对 Ontology 的访问"受权限约束，**不保证**开发者塞进 LLM prompt 的具体内容也受同样约束
+> - 实际安全等级取决于开发者**是否始终通过 Ontology 接口取数**，以及对 LLM 输出的处理（避免越权对象被反推、避免敏感字段被回显等）
+> - 营销话术"AI 看不到人看不到的数据"成立的前提是：所有 AI 入口的数据都经过 Ontology + OSDK 鉴权，且没有绕过 Ontology 的旁路数据通道
 
 ---
 
 ## 7. OAG：Ontology 如何改变 AI 的检索方式
 
-RAG（检索增强生成）是目前主流做法，OAG（Ontology 增强生成）是 Palantir 的进阶版本。
+RAG（Retrieval-Augmented Generation，检索增强生成）是目前主流做法，本节用 OAG（Ontology-Augmented Generation）描述 Palantir 路线带来的范式差异。
+
+> ⚠️ **术语提示**：**"OAG" 不是 Palantir 官方主推的标准术语**，更多出现在社区分析文章中（如 zerofuturetech 等）。Palantir 官方更倾向用 "Ontology-based AI"、"AIP Logic"、"semantic layer for AI" 等说法。本文使用 OAG 仅为了与 RAG 形成对照，便于讨论范式差异，**引用时请避免把它当作 Palantir 官方概念**。
+>
+> 此外，关于 RAG vs OAG 的具体比较是否过于一边倒、以及"现代 RAG"已经能做哪些事，请见 §12.4 的反方论述。
 
 ### RAG vs OAG 对比
 
@@ -310,6 +356,8 @@ OSDK（Ontology SDK）是开发者对接 Ontology 的编程接口，让外部应
 3. **Foundry 作为后端**：不用自己搭 API Server，Foundry 直接提供高性能查询能力
 
 ### OSDK 示例（Python 风格伪码）
+
+> `[API 形态待核实]` 下面是风格示意，**实际 OSDK Python 的 API 命名/链式语法以官方文档为准**——Python OSDK 较新、版本演进较快，实际可能在客户端构造、对象查询、链路遍历的写法上与下面差异较大。读者请把这段代码看作"心智模型"，不要直接复制使用。
 
 ```python
 # 查询高风险客户
@@ -388,6 +436,73 @@ client.actions.send_retention_email(
 | ORM（Hibernate） | 对象化数据访问 | 无关系语义，无权限，无 AI 集成 |
 | RAG | AI + 企业知识 | 只查文本，不能操作业务系统 |
 | **Palantir Ontology** | **以上都有** | **Objects + Links + Actions + Functions + 权限 全部一体化** |
+
+---
+
+## 12. 局限、批评与替代方案（独立审视）
+
+前面的论述基本是从 Palantir 视角出发的，下面把另一面也摆出来。**任何把 Palantir 当作"唯一正确答案"的判断，都需要先消化下面这几点。**
+
+### 12.1 商业模式与价格争议
+
+- **合同规模**：Palantir 的企业合同通常**起步 $1M+/年，大客户合同上亿美元**。Ontology 不是 SaaS 订阅式的轻量产品。
+- **"软件还是咨询"的长期质疑**：相当一部分收入来自 FDE 驻场服务，业内长期讨论 Palantir 究竟是软件公司还是高端咨询。这影响估值逻辑，也影响"能不能用 Palantir 范式 = 能不能直接买 Palantir"的判断。
+- **中小企业实际无法负担**——Ontology + FDE 范式的"完整版"对绝大多数企业不现实，**这就是为什么对国内大多数团队来说，研究 Palantir 只能是借鉴方法论**。
+
+### 12.2 锁定效应（Vendor Lock-in）
+
+- Ontology 一旦建好，**业务对象、关系、Action 规则、权限策略**都绑在 Foundry 上。
+- 数据虽然名义上还在客户的存储里，但**业务语义层**完全是 Palantir 私有形态，**离开 Palantir 等于重建语义层**。
+- 这是护城河的另一面——对 Palantir 是收入保障，对客户是退出成本。
+
+### 12.3 FDE 模式不是稳态，是正在演变的过渡形态
+
+- 02 文档讲的 FDE 模式有效，但**Palantir 自己近年的产品演进（OSDK、Workshop 模板化、AIP Assist）目标恰恰是降低对 FDE 的依赖**——因为 FDE 模式本质是人头堆出来的服务，扩展性受限。
+- 把 FDE 当成"稳态最佳实践"来论述会过时。更准确的判断是：**FDE 是冷启动期的必要投入，Palantir 在尝试让"配置 + 模板 + Agent"逐步替代部分 FDE 工作**。
+- 推论：国内想复刻"驻场工程师"模式时，应该已经规划好**FDE 工作如何沉淀为可复用资产**，否则会陷入"永远在堆人"的困局。
+
+### 12.4 OAG > RAG 的相对性
+
+第 7 节对 OAG 的描述有理想化倾向，需要补一段反方观点：
+
+- **OAG 的前提是已经有 Ontology**。建好 Ontology 的工程量 ≫ 搭一套 RAG 的工程量。把"OAG 比 RAG 好"和"建 Ontology 比建 RAG 难"放在一起看，结论是"前期投入换长期回报"，**不是 OAG 在所有阶段都优于 RAG**。
+- **现代 RAG ≠ 朴素文本检索**。Agent + Tool Use + 结构化检索 + 函数调用（function calling）已经能做很多 OAG 主张的"读 + 写"组合，只是没有统一治理框架。
+- **真正的差异不在检索范式，而在治理一体化**：Palantir 把权限/审计/Action/语义放在同一套框架内交付，这是范式优势；至于"检索的具体方式"反而是次要的。
+
+### 12.5 真正可比的替代方案对比
+
+01 §11 的对比表（知识图谱 / 数据仓库 / ORM / RAG）只覆盖了"概念层面相似的技术"，**没有覆盖商业上真正在和 Palantir 竞争的方案**。下面这张表是补充。
+
+| 方案 | 类似能力 | 主要差距 | 适用场景 |
+|------|---------|---------|---------|
+| **Databricks**（Lakehouse + Unity Catalog + Genie + Agent Bricks） | 数据治理、AI Agent、SQL 自然语言查询 | 没有显式"对象 + Action"语义模型；治理统一性弱于 Foundry | 已有数据团队、偏数据驱动的中大型企业 |
+| **Microsoft Fabric + Copilot Studio** | 数据平台 + 低代码 AI 应用 | 与 M365/Azure 生态强绑定；Action 化能力弱 | 微软重度用户、办公场景为主 |
+| **Snowflake Cortex AI** | 数据仓库 + 内置 LLM / Agent | 跨系统集成能力弱；本质还是仓库内 AI | Snowflake 用户、数据已经集中的场景 |
+| **开源组合**（dbt + Neo4j/Dgraph + LangGraph/LlamaIndex + 自建权限层） | 理论上每一层都能找到对应组件 | 整合成本极高，需要强工程能力，治理统一性几乎靠自己造 | 工程能力强、预算紧、愿意长期投入平台建设 |
+| **国产方案**（阿里通义企业版 + Hologres、字节豆包企业版、华为盘古、智谱企业版等） | 语义查询、业务集成、合规部署 | Ontology 抽象未成熟、FDE 角色弱、Action 治理框架缺失 | 数据合规要求高的国内企业 |
+| **Palantir Foundry + AIP** | 语义 + Action + 治理 + AI 应用一体化 | 价格高、锁定强、不进中国市场 | 大型跨国企业、政府/军工 |
+
+**关键判断**：
+
+- "Palantir 是唯一选择"是错觉。商业上有真正的替代品，**只是没有任何一家把"Ontology + FDE + 治理"这套组合做到 Palantir 这种完整度**。
+- 国内场景下，**没有现成可买的完整版**——通常需要"国产数据平台 + 自建语义层 + 业务侧驻场团队"的组合，**这本质上是一个 self-built Foundry+Ontology+FDE 的工程项目**，难度极高但可行。
+
+### 12.6 地缘政治前提
+
+- Palantir 与美国情报、国防和情报承包业务关系紧密（CIA In-Q-Tel 早期投资、Gotham 在国防情报场景被广泛使用）。
+- **Palantir 不进中国市场**，无论本土公司还是中国设立的 Palantir 实体都不存在。
+- 这意味着对国内团队来说，**研究 Palantir = 研究方法论，不是研究采购选项**。这个前提应贯穿后续所有"如何落地"的讨论。
+
+### 12.7 已公开的失败案例与争议
+
+只讲成功故事会形成幸存者偏差，下面是几个**公开讨论过的争议/失败案例**（具体细节待后续案例研究展开）：
+
+- **NHS（英国国家医疗服务体系）合同**：2023 年中标后被法律挑战，数据治理与中标流程在英国引发持续争论。
+- **WPP / NHS COVID 数据合同**：因数据隐私问题被公开质疑。
+- **JPMorgan Chase**：早期客户之一，但后续把部分能力收回自建。
+- **多家欧洲客户**：因 GDPR 合规和"美国公司处理欧洲敏感数据"的政治压力而撤出或缩减。
+
+> 推论：**Palantir 真正难的不是技术，是政治、合规和数据主权问题**。这部分在国内场景下会以另一种形式（数据出境、国产化要求）出现。
 
 ---
 
