@@ -45,21 +45,18 @@ export default defineConfig({
       },
       {
         text: '第一阶段：理解底层模型',
-        collapsed: false,
         items: [
           { text: 'Palantir Ontology 深析', link: '/01-palantir-aip-ontology' },
         ],
       },
       {
         text: '第二阶段：理解落地角色',
-        collapsed: false,
         items: [
           { text: 'FDE 是谁、怎么工作、为什么有效', link: '/02-fde-forward-deployed-engineer' },
         ],
       },
       {
         text: '第三阶段：从理论到落地',
-        collapsed: false,
         items: [
           { text: '企业 AI 落地方法论', link: '/03-enterprise-ai-landing' },
         ],
