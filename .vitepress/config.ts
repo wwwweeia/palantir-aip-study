@@ -31,6 +31,7 @@ export default defineConfig({
           { text: '① Ontology 底层模型', link: '/01-palantir-aip-ontology' },
           { text: '② FDE 落地角色', link: '/02-fde-forward-deployed-engineer' },
           { text: '③ 企业 AI 落地', link: '/03-enterprise-ai-landing' },
+          { text: '④ 国产化落地行动指南', link: '/04-action-guide-domestic-ai' },
           { text: '碎片洞察', link: '/99-notes-and-insights' },
         ],
       },
@@ -59,6 +60,12 @@ export default defineConfig({
         text: '第三阶段：从理论到落地',
         items: [
           { text: '企业 AI 落地方法论', link: '/03-enterprise-ai-landing' },
+        ],
+      },
+      {
+        text: '第四阶段：收束与行动',
+        items: [
+          { text: '国产化 AI 落地行动指南', link: '/04-action-guide-domestic-ai' },
         ],
       },
       {

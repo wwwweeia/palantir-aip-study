@@ -371,8 +371,7 @@ high_risk_customers = client.ontology.objects.Customer.where(
     Customer.object_type.lifetime_spend < 10000
 ).where(
     Customer.object_type.last_order_date < "2024-01-01"
-)
-    .fetch_page()
+).fetch_page()
 
 # 遍历关联订单（链路遍历语法以官方 OSDK 文档为准）
 for customer in high_risk_customers:

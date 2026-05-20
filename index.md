@@ -26,6 +26,10 @@ features:
     title: 企业 AI 落地方法论
     details: 没有 Foundry 时，能否用开源/国产方案搭出近似的语义层+Action层+治理体系？行业案例与规模化坑。
     link: /03-enterprise-ai-landing
+  - icon: 🗺️
+    title: 国产化落地行动指南
+    details: 三档决策框架（RAG+工作流 / 加语义层 / 深度平台化），每档的工具链、成本、第一步做什么、撞墙信号。
+    link: /04-action-guide-domestic-ai
   - icon: 📝
     title: 碎片洞察与追问
     details: 学习过程中的实时记录——未解决的问题、横切洞察、待核实标注，按日期追加。
