@@ -35,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 上下文承接（最近一次会话：2026-05-20，第二轮修订后）
+## 上下文承接（最近一次会话：2026-05-20，Q1/Q2/Q3 质量修订后）
 
 > 这一节是给**下一位 Claude 实例**的接手说明。完成一个推进阶段后，请同步更新它。
 
@@ -47,26 +47,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - 多处 `[待核实]` 标注（Interfaces 引入时间、Function-backed Rule 互斥、Functions 多语言体系归属、OSDK Python API 形态）
   - "AI 看不到人看不到的数据"已软化为工程化精确表达
 - ✅ `README.md` 顶部已加"研究前提"，明确**Palantir 不进中国市场，本研究目的是方法论借鉴**
-- ✅ `02-fde-forward-deployed-engineer.md` —— D1 深化完成（2026-05-20）
-  - 新增"FDE 模式的挑战与终局"（结构性矛盾分析 + 过渡形态论证）
-  - 新增"FDE 的演变弧线"（1.0→3.0 三阶段 + 知识晶体化路径 Mermaid 图）
-  - 新增"FDE 模式的中国移植：三种变形"（驻场外包 / 业务架构师 / 技术合伙人式 CSM）
-  - 删除"对国内 AI 落地的启示"（内容已整合进"中国移植"节）
-  - 迁移"待深入"追问至 `99-notes-and-insights.md`
-  - `[待核实]` 标注：AIP Assist 能力边界、FDE 演变阶段时间节点
-- ✅ `03-enterprise-ai-landing.md` —— D2 深化完成（2026-05-20）
-  - 新增"没有 Foundry 时：开源/国产方案能搭出什么？"（三层架构对比表 + 最小拼接路径 + 选型建议）
-  - 新增"从 POC 到规模化的常见坑"（5 类系统性风险）
-  - 新增"行业切入视角"（制造/金融/政务，含批判视角）
-  - 删除"待展开"追问列表，迁移至 `99-notes-and-insights.md`
-  - `[待核实]` 标注：Dify 当前工具调用能力边界
-- 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（第二轮独立审视后的修订）"小节
+- ✅ `02-fde-forward-deployed-engineer.md` —— Q1 质量修订完成（2026-05-20）
+  - **前半升级（路线 B）**：
+    - "FDE 如何开展工作" → 重写为"四个身份为什么缺一不可"（逆向拆解表格）
+    - "典型工作流程" → 压缩 + 加注"FDE 特有的是步骤间的双轨判断密度"
+    - 删除"FDE 为客户创造的价值"节（销售 PPT 语言）
+    - "FDE 适合场景" → 改写为"FDE 不适合的场景"（边界比范围更重要）
+  - 顶部加"阅读前提"承接句（来自 01 Ontology 语义层 → 02 FDE 让它落地）
+  - `[待核实]` 标注保留：AIP Assist 能力边界、FDE 演变阶段时间节点
+- ✅ `03-enterprise-ai-landing.md` —— Q2/Q3 质量修订完成（2026-05-20）
+  - **Step 3 升级**：用制造业物料追踪具体场景对比"SQL 表 vs Ontology 关系显式化"的差异，说明为什么 Ontology 能让 AI 理解业务上下文
+  - 顶部加"阅读前提"承接句（来自 01+02 → 03 = 没有 Palantir 怎么办？坑在哪？）
+  - `[待核实]` 标注保留：Dify 当前工具调用能力边界
+- 衍生追问见 `99-notes-and-insights.md` 末尾"2026-05-20（Q1/Q2/Q3 质量修订）"小节
 
 ### 下一步推进方向
 
-**D1：深化 02-FDE ✅ 已完成（2026-05-20）**
+**Q1：02-FDE 前半升级 ✅ 已完成（2026-05-20）**
 
-**D2：扩展 03-企业落地 ✅ 已完成（2026-05-20）**
+**Q2：03-落地 Step 3 升级 ✅ 已完成（2026-05-20）**
+
+**Q3：02/03 承接句 ✅ 已完成（2026-05-20）**
+
+**Q4（低优先级）：[待核实] 核实**
+优先核实三项（可用 `tavily-search`）：
+- AIP Assist 的当前能力边界
+- FDE 演变阶段时间节点
+- Dify 工具调用的 Human-in-the-Loop 支持情况
 
 ### 必须避免
 
