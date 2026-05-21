@@ -32,6 +32,7 @@ export default defineConfig({
           { text: '② FDE 落地角色', link: '/02-fde-forward-deployed-engineer' },
           { text: '③ 企业 AI 落地', link: '/03-enterprise-ai-landing' },
           { text: '④ 国产化落地行动指南', link: '/04-action-guide-domestic-ai' },
+          { text: '⑤ Ontology 工程落地模式', link: '/05-ontology-engineering-patterns' },
           { text: '碎片洞察', link: '/99-notes-and-insights' },
         ],
       },
@@ -66,6 +67,12 @@ export default defineConfig({
         text: '第四阶段：收束与行动',
         items: [
           { text: '国产化 AI 落地行动指南', link: '/04-action-guide-domestic-ai' },
+        ],
+      },
+      {
+        text: '第五阶段：工程化实施模式',
+        items: [
+          { text: 'Ontology 工程落地模式', link: '/05-ontology-engineering-patterns' },
         ],
       },
       {
