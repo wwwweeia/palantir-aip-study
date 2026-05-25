@@ -213,3 +213,79 @@
 - [ ] 子图边界变化时（新增实体类型），向量索引的增量更新机制如何设计，避免全量重建
 - [ ] 国内私有化 LLM（DeepSeek 本地部署等）在 NL→图查询生成质量上与 GPT-4o 的差距，是否影响语义路由链的可用性
 - [ ] 一致性分级 STRONG_ON_READ 的穿透读性能代价：如果 Action 的前置条件需要穿透多个业务系统，延时会不会超出可接受范围？
+
+---
+
+## 2026-05-25（发现 UModel 开源项目）
+
+### 核心发现
+
+阿里巴巴开源了 [UModel（Unified Model）](https://github.com/alibaba/UnifiedModel)，Apache-2.0，19 天前创建，今日仍在活跃合并 PR。
+
+**一句话定位**：这是一个厂商中立的企业语义运行时——可以理解为**阿里开源版的 Palantir Ontology 语义层**，把分散的业务对象、关系、拓扑组织成 workspace-scoped 对象图，通过 MCP 暴露给 AI Agent。
+
+**与 Palantir 概念对照**：
+
+| Palantir | UModel | 备注 |
+|---|---|---|
+| Object Type | EntitySet / DataSet | 概念相同 |
+| Link（关系） | entity_set_link + `.topo` 查询 | 多了拓扑专属查询入口 |
+| OSDK | Go/Python/Java SDK（生成式） | 契约驱动，不绑定平台 |
+| AIP Agent 接入 | AgentGateway + MCP | 用开放 MCP 标准，不锁定 |
+| Ontology Functions | Query Service（`.umodel`、`.entity`、`.topo`） | 查询语言不同 |
+| Foundry 平台 | 不含 | 只做语义运行时，不做数据管道 |
+
+**当前活跃度**（截至 2026-05-25）：
+
+- 仓库年龄：19 天，Stars 62，Forks 10
+- 6 个 PR 全部已 merge，今日刚合并热修复
+- 4 个 feature branch 正在推进
+- Issue #7 是"多厂商生态参与"RFC，正在建社区治理
+
+### PR 工作内容速览
+
+| PR | 类型 | 核心内容 |
+|---|---|---|
+| #1 | Bug fix | 开发环境：conda/venv Python 探测 + vite 启动路径修复 |
+| #3 | Feat | CI 能力门禁：Go 集成测试（capability gate + quickstart health）+ Playwright E2E |
+| #4 | Chore | 品牌更名 OpenUModel → UModel（命名在 19 天内才定） |
+| #5 | **Feat** | **支付网关故障排查示例**：三层领域（business/platform/runtime）跨域关系建模 + runbook_set |
+| #6 | **Feat** | **写入路径 schema 强校验**：20 种 schema 嵌入 Go 二进制，umctl/REST/MCP 写入均校验 |
+| #8 | Bug fix | CI 热修复：PR #4 改了 schema 文字未同步嵌入副本，一行修复 |
+
+### 关键架构洞察（来自 PR #5 / #6）
+
+PR #5 揭示了 UModel 最核心的使用姿势：
+
+```
+business.order_flow ──────────────────────────────────────┐
+business.promotion ──triggers──► platform.config_change   │
+platform.service ◄──affects── platform.config_change     │
+platform.service ──runs_as──► runtime.workload ◄──────────┘
+```
+
+跨域链接类型示例：`incident_impacts_service`、`service_calls_service`、`team_owns_service`
+
+PR #6 揭示了 schema 有两套存储（源头 `expanded_schemas/` + 嵌入副本 `internal/umodel/schemaspec/data/`），自己改 schema 后必须执行 `make schemas-embed`，否则 CI 会报错。
+
+### 对现有笔记的意义
+
+- **04 篇路径 B**（自建语义抽象层）：UModel 是目前国产开源里概念对齐度最高的参考实现，可以作为具体工具链填补之前的空白
+- **01 篇替代方案表**：国产开源一栏从"无直接对标"升级为 UModel
+- ✅ 之前追问"国内有没有近似 Ontology 的开源实现"——已有答案
+
+### 跟进实验路线图
+
+```
+Step 1  make quickstart → 跑通 demo，看 Web UI（Explorer / Query / Agent 视图）
+Step 2  读 tests/integration/capability_gate_test.go → 理解完整 API 能力边界
+Step 3  加载 incident-investigation sample，在 Web UI 走一遍跨域查询
+Step 4  仿照 PR #5 结构，建一个自己业务域的 entity_set 模型包
+Step 5  接 MCP：umctl agent discover → 连 Claude/Cursor 作为 Agent client
+```
+
+### 风险提示
+
+- **API 不稳定**：命名 19 天内才定，schema 字段名 PR #5 就写错过（src vs source），不适合生产依赖
+- **社区体量小**：62 stars，背后团队规模未知，核心 contributor 少
+- `local.ladybug` provider 依赖阿里内部运行时，私有化部署时该 provider 无法使用，只能用 `file.memory`
