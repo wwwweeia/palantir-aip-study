@@ -1,0 +1,15 @@
+/* Mermaid SVG 鼠标指针提示可点击 */
+.vp-doc svg {
+  cursor: zoom-in;
+  transition: opacity 0.2s;
+}
+
+.vp-doc svg:hover {
+  opacity: 0.85;
+}
+
+/* medium-zoom 遮罩层层级修正（避免被 VitePress 导航遮挡） */
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 10000;
+}
