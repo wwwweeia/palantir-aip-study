@@ -289,3 +289,31 @@ Step 5  接 MCP：umctl agent discover → 连 Claude/Cursor 作为 Agent client
 - **API 不稳定**：命名 19 天内才定，schema 字段名 PR #5 就写错过（src vs source），不适合生产依赖
 - **社区体量小**：62 stars，背后团队规模未知，核心 contributor 少
 - `local.ladybug` provider 依赖阿里内部运行时，私有化部署时该 provider 无法使用，只能用 `file.memory`
+
+---
+
+## 2026-05-25（启动 UModel 0~1 学习路线）
+
+### 学习路线设计
+
+针对 UModel 制定了 6 阶段学习路线，沉淀为 `06-umodel-alibaba-semantic-runtime.md`：
+
+1. 概念桥接（用 Palantir 词汇对照 UModel，30 分钟）
+2. `make quickstart` 快速体验 Web UI（1 小时）
+3. SPL 三种查询实践（`.umodel` / `.entity` / `.topo`，1 小时）
+4. 自定义 Model Pack 动手练习（电商订单场景，2 小时）
+5. Agent 反射机制理解（MCP + `__list_method__()`，30 分钟概念）
+6. 批判性总结写入 06 篇笔记
+
+### 核心认知更新
+
+**SPL 的 `.topo` 查询 + Cypher 支持是 Palantir 没有的**：Palantir 的 Link 查询走 OSDK，UModel 额外提供图数据库级别的 Cypher 查询，更灵活但也意味着查询语法更复杂，需要额外学 Cypher。
+
+**`__list_method__()` 反射是 Agent 集成的关键设计**：传统 Agent 框架需要把工具列表写死在 System Prompt 里，UModel 让 Agent 在运行时自己查"这个对象支持什么操作"，更接近真正的自主决策。但这要求 Agent 有探索-规划-执行的完整能力，对模型能力要求更高。
+
+### 新追问
+
+- [ ] `make quickstart` 里的 demo 数据覆盖了哪几个领域（domain），与支付网关示例（PR #5）的业务场景有何不同？
+- [ ] SPL 的 `series_decompose_anomalies` 是内置算子还是外部插件？异常检测精度如何，和专用时序异常检测比怎么样？
+- [ ] `__list_method__()` 返回的方法列表是静态注册的还是运行时反射的？如果是静态注册，和传统 Function Calling 工具列表有什么本质区别？
+- [ ] `file.memory` provider（JSON 持久化）在数据量上限和查询性能上的边界在哪里？是否有 benchmark？

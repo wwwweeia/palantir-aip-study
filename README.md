@@ -69,6 +69,16 @@
 - GraphRAG vs Ontology-driven 的本质区别：非结构化问答 vs 受控业务执行
 - 建模四步法 + 语义索引层（召回质量的真正决定因素）
 
+**第六阶段：开源实现参考**
+
+`06-umodel-alibaba-semantic-runtime.md` — 阿里开源 UModel：国产最接近 Palantir Ontology 语义层的参考实现
+- 概念对照表：Palantir Object Type / Link / OSDK → UModel EntitySet / Topology / 生成式 SDK
+- SPL 三种查询类型（`.umodel` / `.entity` / `.topo`）代码示例
+- Agent 反射机制（`__list_method__()`）与 Palantir AIP Assist 的本质差异
+- 支付网关故障排查真实示例（三层领域跨域建模）
+- 批判节：API 不稳定风险、功能边界、社区体量对比
+- 在 04 篇三档路径框架中的定位
+
 **附录（持续更新）**
 
 `99-notes-and-insights.md` — 学习过程中的碎片洞察与追问，按日期分节追加
@@ -84,3 +94,4 @@
 - [x] Q1/Q2/Q3 质量修订（2026-05-20：02-FDE 前半升级路线B + 03-落地 Step 3 升级 + 02/03 承接句）
 - [x] 04-国产化 AI 落地行动指南——D3 初版（2026-05-20：三档决策框架 + 工具链 + 避坑 + 自我批判）
 - [x] 05-Ontology 工程落地模式——初版（2026-05-21：受控执行三原则 + 语义路由链 + GraphRAG 辨析 + 建模四步法）
+- [x] 06-UModel 阿里开源语义运行时——初稿（2026-05-25：概念对照 + SPL 三种查询 + Agent 反射机制 + 批判节）

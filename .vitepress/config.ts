@@ -34,6 +34,7 @@ export default withMermaid(defineConfig({
           { text: '③ 企业 AI 落地', link: '/03-enterprise-ai-landing' },
           { text: '④ 国产化落地行动指南', link: '/04-action-guide-domestic-ai' },
           { text: '⑤ Ontology 工程落地模式', link: '/05-ontology-engineering-patterns' },
+          { text: '⑥ UModel 开源语义运行时', link: '/06-umodel-alibaba-semantic-runtime' },
           { text: '碎片洞察', link: '/99-notes-and-insights' },
         ],
       },
@@ -74,6 +75,12 @@ export default withMermaid(defineConfig({
         text: '第五阶段：工程化实施模式',
         items: [
           { text: 'Ontology 工程落地模式', link: '/05-ontology-engineering-patterns' },
+        ],
+      },
+      {
+        text: '第六阶段：开源实现参考',
+        items: [
+          { text: 'UModel 阿里开源语义运行时', link: '/06-umodel-alibaba-semantic-runtime' },
         ],
       },
       {
