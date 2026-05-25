@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   base: '/palantir-aip-study/',
   lang: 'zh-CN',
   title: 'Palantir AIP 研究',
@@ -139,4 +140,4 @@ export default defineConfig({
       next: '下一篇',
     },
   },
-})
+}))
